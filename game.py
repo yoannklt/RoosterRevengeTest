@@ -1,5 +1,6 @@
 import pygame
 from player import Player
+from enemy import Enemy
 
 class Game():
     
@@ -10,6 +11,7 @@ class Game():
         pygame.display.set_caption('Rooster Revenge')
         
         self.player = Player()
+        self.enemy = Enemy()
         
     def run(self):
         running = True
@@ -19,8 +21,13 @@ class Game():
                 if event.type == pygame.QUIT:
                     running = False
 
+                if pygame.Rect.colliderect(self.player.rectPlayer, self.enemy.rectEnemy):
+                    self.player.rectPlayer = self.player.rectPlayer.move(-10, 0)
+
+
             self.screen.fill((255, 0, 0))
             self.screen.blit(self.player.player, self.player.rectPlayer)
+            self.screen.blit(self.enemy.enemy, self.enemy.rectEnemy)
             pygame.display.flip()
         
   
