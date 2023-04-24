@@ -4,8 +4,9 @@ class Enemy():
     
     def __init__(self):
         
-        self.enemy = pygame.image.load("img/enemy.png")
+        self.imageInit = pygame.image.load("img/enemy.png")
+        self.image = pygame.transform.scale(self.imageInit, (150, 100))
+
+        self.rect = self.image.get_rect()
         
-        self.rectEnemy = self.enemy.get_rect()
-        
-        self.rectEnemy = self.rectEnemy.move(300, 100)
+        self.rect = self.rect.move(300, 100)

@@ -14,6 +14,7 @@ class Game():
         self.enemy = Enemy()
         
     def run(self):
+        clock = pygame.time.Clock()
         running = True
         
         while running:
@@ -21,14 +22,15 @@ class Game():
                 if event.type == pygame.QUIT:
                     running = False
 
-                if pygame.Rect.colliderect(self.player.rectPlayer, self.enemy.rectEnemy):
-                    self.player.rectPlayer = self.player.rectPlayer.move(-10, 0)
+                if pygame.Rect.colliderect(self.player.rect, self.enemy.rect):
+                    self.player.moveSelf(-10, 0)
 
 
             self.screen.fill((255, 0, 0))
-            self.screen.blit(self.player.player, self.player.rectPlayer)
-            self.screen.blit(self.enemy.enemy, self.enemy.rectEnemy)
+            self.screen.blit(self.player.image, self.player.rect)
+            self.screen.blit(self.enemy.image, self.enemy.rect)
             pygame.display.flip()
+            clock.tick(60)
         
   
   
