@@ -8,7 +8,9 @@ class Player():
         
         self.image = pygame.transform.scale(self.imageInit, (100, 175))
 
-        self.rect = self.image.get_rect()
+        self.rect = self.image.get_rect(center=(450,600))
+        
+        self.health = 100
 
     def move(self, x, y):
         # Move

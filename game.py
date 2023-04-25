@@ -4,6 +4,7 @@ from bullet import Bullet
 from enemies import Enemies
 from obstacle import Obstacle
 from level import Level
+from crates import Crates
 
 class Game():
     
@@ -28,6 +29,7 @@ class Game():
         self.right = pygame.K_d
         self.shoot = pygame.K_SPACE
         self.shots = []
+        self.crates = []
         
     def run(self):
         clock = pygame.time.Clock()
@@ -55,16 +57,16 @@ class Game():
                 self.shots.append(Bullet((self.player.rect.x + (self.player.rect.w // 2)), self.player.rect.y))
 
             #Lancer level 
-            if self.testlevel.create == True :
-                self.testlevel.createObsatcle()
-                self.testlevel.create = False
+            # if self.testlevel.create == True :
+            #     self.testlevel.createObsatcle()
+            #     self.testlevel.create = False
                     
             self.screen.fill((4, 16, 29))
             self.screen.blit(self.background, (0, backgroundY))
             
-            for obstacle in self.testlevel.obstaclelist :
-                self.screen.blit(obstacle.image, obstacle.rect)
-                obstacle.rect.y += 2
+            # for obstacle in self.testlevel.obstaclelist :
+            #     self.screen.blit(obstacle.image, obstacle.rect)
+            #     obstacle.rect.y += 2
                               
             for projectile in self.shots:
                 self.screen.blit(projectile.image, projectile.rect)
@@ -73,10 +75,19 @@ class Game():
                     self.shots.remove(projectile)
                     self.enemies.health -= projectile.bullet_damage 
                     if self.enemies.health <= 0:
-                        print("mort")
+                        self.crates.append(Crates(self.enemies.rect.x + (self.enemies.rect.w // 2), self.enemies.rect.y + self.enemies.rect.h ))
                 if projectile.rect.y < 0 :
                     self.shots.remove(projectile)
-                    
+             
+            for crates in self.crates:
+                self.screen.blit(crates.image, crates.rect)
+                crates.rect.y += crates.velocity   
+                if crates.rect.colliderect(self.player.rect):
+                    if crates.crate_type == 1:
+                        self.player.health += crates.heal
+                    self.crates.remove(crates) 
+                if crates.rect.y < 0 :
+                    self.crates.remove(crates)
                 
             self.screen.blit(self.player.image, self.player.rect)
             self.screen.blit(self.enemies.image, self.enemies.rect)
