@@ -51,7 +51,8 @@ class Game():
                 self.cooldown = pygame.time.get_ticks() + 16 * 10
                 self.shots.append(Bullet((self.player.rect.x + (self.player.rect.w // 2)), self.player.rect.y))
 
-            self.screen.fill((0, 0, 0))
+            self.screen.fill((4, 16, 29))
+            self.screen.blit(self.background, (0, backgroundY))
             
             for projectile in self.shots:
                 self.screen.blit(projectile.image,projectile.rect)
