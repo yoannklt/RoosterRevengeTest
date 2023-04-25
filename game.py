@@ -10,10 +10,13 @@ class Game():
         self.screenHeight =  700
         self.screen = pygame.display.set_mode((self.screenWidth, self.screenHeight))
         pygame.display.set_caption('Rooster Revenge')
-        self.clock = pygame.time.Clock()
-        self.ticks = pygame.time.get_ticks()
         
         self.cooldown = 0
+        # Initialize backgrounds
+        self.background = pygame.image.load('img/background.jpg')
+        self.background.convert()
+        
+        # Initialize classes
         self.player = Player()
         self.enemies = Enemies(450, 100)
         self.up = pygame.K_z
@@ -25,9 +28,11 @@ class Game():
         
     def run(self):
         clock = pygame.time.Clock()
+        backgroundVelocity = 0
         running = True
         
         while running:
+            backgroundY = -1400 + backgroundVelocity
             for event in pygame.event.get():
                 if event.type == pygame.QUIT:
                     running = False
@@ -63,6 +68,7 @@ class Game():
             self.screen.blit(self.player.image, self.player.rect)
             self.screen.blit(self.enemies.image, self.enemies.rect)
             pygame.display.flip()
+            backgroundVelocity += 0.8
             clock.tick(60)
         
   
