@@ -11,4 +11,6 @@ class Player():
         # Get rectangle from image
         self.rect = self.image.get_rect()
         self.rect.x = 200
+        
+        self.health = 100
 

@@ -14,26 +14,16 @@ class Enemies():
         self.rect.y = 0
 
         self.health = 20
+        self.speed = 2
         
     def update(self):
         
-        goingRight = True
-        goingLeft = False
-        while goingRight:
-            if self.rect.x + self.rect.width <= 900:
-                self.rect.x += 2
-            else :
-                goingRight = False
-                goingLeft = True
-            
-        while goingLeft:
-            if self.rect.x >= 0:
-                self.rect.x -= 2
-            else :
-                goingLeft = False
-                goingRight = True
-                
-
-            
+        
+        self.rect.x += self.speed
+        if self.speed > 0 and self.rect.x + self.rect.width >= 900:
+            self.speed *= -1
+        
+        if self.speed < 0 and self.rect.x <= 0:
+            self.speed *= -1
         
         
