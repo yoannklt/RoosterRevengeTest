@@ -18,7 +18,7 @@ class Game():
         
         # Initialize classes
         self.player = Player()
-        self.enemies = Enemies(450, 100)
+        self.enemies = Enemies()
         self.up = pygame.K_z
         self.down = pygame.K_s
         self.left = pygame.K_q
@@ -48,7 +48,7 @@ class Game():
                 self.player.rect.x += 5
                  
             if key_states[self.shoot] and self.cooldown < pygame.time.get_ticks():
-                self.cooldown = pygame.time.get_ticks() + 16 * 10
+                self.cooldown = pygame.time.get_ticks() + 120
                 self.shots.append(Bullet((self.player.rect.x + (self.player.rect.w // 2)), self.player.rect.y))
 
             self.screen.fill((4, 16, 29))
@@ -60,16 +60,17 @@ class Game():
                 if projectile.rect.colliderect(self.enemies.rect):
                     self.shots.remove(projectile)
                     self.enemies.health -= projectile.damage 
-                    if self.enemies.health <= 0:
+                    if self.enemies.health == 0:
                         print("mort")
                 if projectile.rect.y < 0 :
                     self.shots.remove(projectile)
                     
                 
             self.screen.blit(self.player.image, self.player.rect)
+            self.enemies.update()
             self.screen.blit(self.enemies.image, self.enemies.rect)
             pygame.display.flip()
-            backgroundVelocity += 0.8
+            backgroundVelocity += 1
             clock.tick(60)
         
   
