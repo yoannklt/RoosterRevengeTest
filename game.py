@@ -2,6 +2,8 @@ import pygame
 from player import Player
 from bullet import Bullet
 from enemies import Enemies
+from obstacle import Obstacle
+from level import Level
 
 class Game():
     
@@ -19,6 +21,7 @@ class Game():
         # Initialize classes
         self.player = Player()
         self.enemies = Enemies(450, 100)
+        self.testlevel = Level()
         self.up = pygame.K_z
         self.down = pygame.K_s
         self.left = pygame.K_q
@@ -51,15 +54,24 @@ class Game():
                 self.cooldown = pygame.time.get_ticks() + 16 * 10
                 self.shots.append(Bullet((self.player.rect.x + (self.player.rect.w // 2)), self.player.rect.y))
 
+            #Lancer level 
+            if self.testlevel.create == True :
+                self.testlevel.createObsatcle()
+                self.testlevel.create = False
+                    
             self.screen.fill((4, 16, 29))
             self.screen.blit(self.background, (0, backgroundY))
             
+            for obstacle in self.testlevel.obstaclelist :
+                self.screen.blit(obstacle.image, obstacle.rect)
+                obstacle.rect.y += 2
+                              
             for projectile in self.shots:
-                self.screen.blit(projectile.image,projectile.rect)
-                projectile.rect.y -= 10
+                self.screen.blit(projectile.image, projectile.rect)
+                projectile.rect.y -= projectile.velocity
                 if projectile.rect.colliderect(self.enemies.rect):
                     self.shots.remove(projectile)
-                    self.enemies.health -= projectile.damage 
+                    self.enemies.health -= projectile.bullet_damage 
                     if self.enemies.health <= 0:
                         print("mort")
                 if projectile.rect.y < 0 :

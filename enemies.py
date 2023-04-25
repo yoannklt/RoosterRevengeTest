@@ -14,8 +14,3 @@ class Enemies():
         self.rect = self.image.get_rect(center=(posx,posy))
 
         self.health = 20
-
-    def move(self, x, y):
-        # Move
-        self.rect.x = x
-        self.rect.x = y
