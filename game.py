@@ -45,6 +45,7 @@ class Game():
     def run(self):
         clock = pygame.time.Clock()
         self.timeStart = pygame.time.get_ticks()
+        self.timerStartBis = pygame.time.get_ticks()
         backgroundVelocity = 0
         running = True
         
@@ -106,6 +107,7 @@ class Game():
                     if bot.health <= 0:
                         self.level.botlist.remove(bot)
                         self.crates.append(Crates(bot.rect.x + (bot.rect.w // 2), bot.rect.y + bot.rect.h))
+                        self.player.updateScore(self.enemy.points)
                 self.screen.blit(bullet.image, bullet.rect)
                 if bullet.rect.y < 0:
                     self.shootmode.bullet_list.remove(bullet)
@@ -121,6 +123,7 @@ class Game():
                     if bot.health <= 0:
                         self.level.botlist.remove(bot)
                         self.crates.append(Crates(bot.rect.x + (bot.rect.w // 2), bot.rect.y + bot.rect.h ))
+                        self.player.updateScore(self.enemy.points)
                 bullet.rect.y -= bullet.velocity
                 bullet.rect.x -= bullet.velocity
                 if bullet.rect.y < 0 or bullet.rect.x < 0:
@@ -137,6 +140,7 @@ class Game():
                     if bot.health <= 0:
                         self.level.botlist.remove(bot)
                         self.crates.append(Crates(bot.rect.x + (bot.rect.w // 2), bot.rect.y + bot.rect.h ))
+                        self.player.updateScore(self.enemy.points)
                 bullet.rect.y -= bullet.velocity
                 bullet.rect.x += bullet.velocity
                 if bullet.rect.y < 0 or bullet.rect.x > 900:
@@ -163,11 +167,18 @@ class Game():
             if self.powerup.shieldOn == True:
                 self.powerup.updateShield(self.player.rect.x - (self.player.rect.w //2), self.player.rect.y)
                 self.screen.blit(self.powerup.image_shield, self.powerup.rect_shield)
-                
+            
             self.player.drawScore(self.screen, 10, 10)
+            
+            self.timerEndOfLoop = (pygame.time.get_ticks() - self.timerStartBis) / 1000
+            if self.timerEndOfLoop == 1:
+                self.player.updateScore(2)
+                self.timerStartBis += 2000
+                
             self.screen.blit(self.zone.image, self.zone.rect)
             self.player.update_health(self.screen , self.screenHeight)
             self.screen.blit(self.player.image, self.player.rect)
+            
             
             # Actualise le rendu
             pygame.display.flip()

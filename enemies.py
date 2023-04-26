@@ -23,6 +23,8 @@ class Enemies():
         
         self.speed = 2
         
+        self.points = 10
+        
         
         
     def update(self):
