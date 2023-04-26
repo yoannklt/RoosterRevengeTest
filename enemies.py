@@ -22,6 +22,7 @@ class Enemies():
         
         if self.speed < 0 and self.rect.x <= 0:
             self.speed *= -1
+            
         
          
             
