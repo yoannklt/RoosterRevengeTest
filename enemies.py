@@ -35,6 +35,7 @@ class Enemies():
         
         if self.speed < 0 and self.rect.x <= 0:
             self.speed *= -1
+            self.image = pygame.transform.flip(self.image, True, False)
         
         
         
