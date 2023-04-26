@@ -29,7 +29,7 @@ class Level():
             if self.enemies[i] < (pygame.time.get_ticks() - game.timeStart) // 1000:
                 if len(self.botlist) < 3:
                     self.enemies.pop(i)
-                    self.botlist.append(Enemies())
+                    self.botlist.append(Enemies(5 - game.player.score / 200))
                     self.enemies.append(randint(self.enemies[-1],self.enemies[-1] + 5 ))   
                 
     def dislpay(self, game):

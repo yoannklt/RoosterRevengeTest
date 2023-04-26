@@ -32,10 +32,10 @@ class Powerup:
             if time_spent_ticks == 6:
                 time_spent_ticks = 0
                 self.shieldOn = False
-            elif self.rect_shield.colliderect(enemyShot.rect) :
-                self.shieldHealth -= enemyShot.bullet_damage
-                if self.shieldHealth <= 0:
-                    self.shieldOn = False
+            # elif self.rect_shield.colliderect(enemyShot.rect) :
+            #     self.shieldHealth -= enemyShot.bullet_damage
+            #     if self.shieldHealth <= 0:
+            #         self.shieldOn = False
         
         
     def SpeedBoost(self, player):

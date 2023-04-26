@@ -1,4 +1,5 @@
 import pygame
+from random import randint
 from player import Player
 from enemy_bullet import Enemy_bullet
 from bullet import Bullet
@@ -10,6 +11,7 @@ from shootmode import Shootmode
 from zone import Zone
 from powerup import Powerup
 from enemy_shot_mode import Enemy_shot_mode
+
 
 class Game():
     
@@ -27,11 +29,11 @@ class Game():
         # Initialize classes
         self.player = Player()
         self.zone = Zone()
+        self.enemies = Enemies(5)
         self.level = Level()
         self.shootmode = Shootmode()
         self.powerup = Powerup()
-        self.enemy = Enemies()
-        self.enemy_shot = Enemy_shot_mode()
+        self.enemies_shot = Enemy_shot_mode()
         
         # Initialize keybinds
         self.up = pygame.K_z
@@ -41,6 +43,7 @@ class Game():
         self.shoot = pygame.K_SPACE
         
         self.crates = []
+        self.bullet_enemies = []
         
     def run(self):
         clock = pygame.time.Clock()
@@ -53,6 +56,9 @@ class Game():
             
             backgroundY = -1400 + backgroundVelocity
             
+            if self.player.health == self.player.takenDamage:
+                running = False
+                
             for event in pygame.event.get():
                 if event.type == pygame.QUIT:
                     running = False
@@ -80,9 +86,16 @@ class Game():
             self.level.update(self)
             self.level.dislpay(self)
             
-            if self.player.rect.colliderect(self.enemy.rect):
-                self.player.takenDamage += self.enemy.bodyDamage
-                                     
+            for projectile in self.bullet_enemies:
+                self.screen.blit(projectile.image, projectile.rect)
+                if projectile.rect.colliderect(self.player.rect):
+                    if projectile in self.bullet_enemies:
+                        self.bullet_enemies.remove(projectile)
+                        self.player.takenDamage += projectile.bullet_damage
+                projectile.rect.y += projectile.velocity
+                if projectile.rect.y > 700:
+                    self.bullet_enemies.remove(projectile)
+                                             
             for bullet in self.shootmode.bullet_list:
                 self.screen.blit(bullet.image, bullet.rect)
                 bullet.rect.y -= bullet.velocity
@@ -95,7 +108,7 @@ class Game():
                          
                         # ! split bullet cooldown DOIT ETRE REGLER !
                          if self.cooldown < pygame.time.get_ticks():
-                            self.cooldown = pygame.time.get_ticks() + 20
+                            self.cooldown = pygame.time.get_ticks() + 70
                             self.shootmode.split(bullet.rect.x, bullet.rect.y)
                             
                             
@@ -106,8 +119,10 @@ class Game():
                             bot.health -= bullet.bullet_damage 
                     if bot.health <= 0:
                         self.level.botlist.remove(bot)
-                        self.crates.append(Crates(bot.rect.x + (bot.rect.w // 2), bot.rect.y + bot.rect.h))
-                        self.player.updateScore(self.enemy.points)
+                        drop = randint(1,4)
+                        if drop == 1 :
+                            self.crates.append(Crates(bot.rect.x + (bot.rect.w // 2), bot.rect.y + bot.rect.h))
+                        self.player.updateScore(self.enemies.points)
                 self.screen.blit(bullet.image, bullet.rect)
                 if bullet.rect.y < 0:
                     self.shootmode.bullet_list.remove(bullet)
@@ -122,8 +137,10 @@ class Game():
                             bot.health -= bullet.bullet_damage 
                     if bot.health <= 0:
                         self.level.botlist.remove(bot)
-                        self.crates.append(Crates(bot.rect.x + (bot.rect.w // 2), bot.rect.y + bot.rect.h ))
-                        self.player.updateScore(self.enemy.points)
+                        drop = randint(1,4)
+                        if drop == 1 :
+                            self.crates.append(Crates(bot.rect.x + (bot.rect.w // 2), bot.rect.y + bot.rect.h ))
+                        self.player.updateScore(self.enemies.points)
                 bullet.rect.y -= bullet.velocity
                 bullet.rect.x -= bullet.velocity
                 if bullet.rect.y < 0 or bullet.rect.x < 0:
@@ -140,8 +157,10 @@ class Game():
                             bot.health -= bullet.bullet_damage 
                     if bot.health <= 0:
                         self.level.botlist.remove(bot)
-                        self.crates.append(Crates(bot.rect.x + (bot.rect.w // 2), bot.rect.y + bot.rect.h ))
-                        self.player.updateScore(self.enemy.points)
+                        drop = randint(1,4)
+                        if drop == 1 :
+                            self.crates.append(Crates(bot.rect.x + (bot.rect.w // 2), bot.rect.y + bot.rect.h ))
+                        self.player.updateScore(self.enemies.points)
                 bullet.rect.y -= bullet.velocity
                 bullet.rect.x += bullet.velocity
                 if bullet.rect.y < 0 or bullet.rect.x > 900:
@@ -167,7 +186,7 @@ class Game():
                 
             # Ajoute des éléments au rendu
             if self.powerup.shieldOn == True:
-                self.powerup.updateShield(self.player.rect.x - (self.player.rect.w //2), self.player.rect.y, self.enemy_shot)
+                self.powerup.updateShield(self.player.rect.x - (self.player.rect.w //2), self.player.rect.y, self.enemies_shot)
                 self.screen.blit(self.powerup.image_shield, self.powerup.rect_shield)
             
             self.player.drawScore(self.screen, 10, 10)
