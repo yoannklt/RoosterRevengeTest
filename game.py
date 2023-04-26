@@ -154,7 +154,7 @@ class Game():
             self.screen.blit(self.zone.image, self.zone.rect)
             self.player.update_health(self.screen , self.screenHeight)
             if self.shield.shieldOn == True:
-                self.shield.update(self.player.rect.x - (self.player.rect.w //2), self.player.rect.y)
+                self.shield.updateShield(self.player.rect.x - (self.player.rect.w //2), self.player.rect.y)
                 self.screen.blit(self.shield.image_shield, self.shield.rect_shield)
                 
             self.screen.blit(self.player.image, self.player.rect)
