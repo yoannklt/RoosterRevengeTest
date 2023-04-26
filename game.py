@@ -1,9 +1,10 @@
 import pygame
 from player import Player
+from enemy_bullet import Enemy_bullet
 from bullet import Bullet
 from enemies import Enemies
 from obstacle import Obstacle
-from level import Level
+from ennemies_fonctions import Ennemies_fonctions
 from crates import Crates
 from shootmode import Shootmode
 from zone import Zone
@@ -25,9 +26,9 @@ class Game():
         # Initialize classes
         self.player = Player()
         self.zone = Zone()
-        self.level = Level()
+        self.level = Ennemies_fonctions()
         self.shootmode = Shootmode()
-        self.shield = Powerup()
+        self.powerup = Powerup()
         
         # Initialize keybinds
         self.up = pygame.K_z
@@ -52,13 +53,13 @@ class Game():
             key_states = pygame.key.get_pressed()
             
             if key_states[self.up]:
-                self.player.rect.y -= 5
+                self.player.rect.y -= self.player.speed
             if key_states[self.down]:
-                self.player.rect.y += 5
+                self.player.rect.y += self.player.speed
             if key_states[self.left]:
-                self.player.rect.x -= 5
+                self.player.rect.x -= self.player.speed
             if key_states[self.right]:
-                self.player.rect.x += 5
+                self.player.rect.x += self.player.speed
                
             if key_states[self.shoot] and self.cooldown < pygame.time.get_ticks():
                 self.cooldown = pygame.time.get_ticks() + 120
@@ -78,9 +79,18 @@ class Game():
             #     obstacle.rect.y += 2
             for bot in self.level.botlist :
                 bot.update()
+                bot.shootPattern()
                 self.screen.blit(bot.image, bot.rect)
             
-                              
+            for projectile_enemie in self.level.bullet_list:
+                self.screen.blit(projectile_enemie.image, projectile_enemie.rect)
+                projectile_enemie.rect.y += projectile_enemie.velocity
+                if projectile_enemie.rect.colliderect(self.player.rect):
+                    self.player.health -= projectile_enemie.bullet_damage
+                    self.level.bullet_list.remove(projectile_enemie)
+                if projectile_enemie.rect.y > 700:
+                    self.level.bullet_list.remove(projectile_enemie)
+                                     
             for bullet in self.shootmode.bullet_list:
                 self.screen.blit(bullet.image, bullet.rect)
                 bullet.rect.y -= bullet.velocity
@@ -145,15 +155,20 @@ class Game():
                     if crates.crate_type == 1:
                         self.player.health += crates.heal
                     elif crates.crate_type == 2:
-                        self.shield.setShieldOn()
+                        self.powerup.PowerOn(1)
+                    elif crates.crate_type == 3:
+                        self.powerup.PowerOn(2)
                     self.crates.remove(crates) 
                 if crates.rect.y < 0 :
                     self.crates.remove(crates)
             
+            if self.powerup.speedOn == True:
+                self.powerup.SpeedBoost(self.player)
+                
             # Ajoute des éléments au rendu
-            if self.shield.shieldOn == True:
-                self.shield.updateShield(self.player.rect.x - (self.player.rect.w //2), self.player.rect.y)
-                self.screen.blit(self.shield.image_shield, self.shield.rect_shield)
+            if self.powerup.shieldOn == True:
+                self.powerup.updateShield(self.player.rect.x - (self.player.rect.w //2), self.player.rect.y)
+                self.screen.blit(self.powerup.image_shield, self.powerup.rect_shield)
             
             self.screen.blit(self.zone.image, self.zone.rect)
             self.player.update_health(self.screen , self.screenHeight)

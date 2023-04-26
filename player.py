@@ -13,7 +13,10 @@ class Player():
 
         
         self.health = 100
+        
         self.takenDamage = 0
+        
+        self.speed = 5
     
     def update_health(self , screen , screenH):
         

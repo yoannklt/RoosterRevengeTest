@@ -1,6 +1,6 @@
 import pygame 
 
-class Bullet():
+class Enemy_bullet():
 
     def __init__(self, enemie_x, enemie_y):
 
