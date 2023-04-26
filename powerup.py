@@ -14,7 +14,7 @@ class Powerup:
         
         self.rect_shield = self.image_shield.get_rect()
 
-    def update(self, x ,y):
+    def updateShield(self, x ,y):
         if self.shieldOn == True:
             time_spent_ticks = (pygame.time.get_ticks() - self.shieldTimeStart) //1000
             self.rect_shield.x = x

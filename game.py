@@ -152,7 +152,7 @@ class Game():
             
             # Ajoute des éléments au rendu
             if self.shield.shieldOn == True:
-                self.shield.update(self.player.rect.x - (self.player.rect.w //2), self.player.rect.y)
+                self.shield.updateShield(self.player.rect.x - (self.player.rect.w //2), self.player.rect.y)
                 self.screen.blit(self.shield.image_shield, self.shield.rect_shield)
             
             self.screen.blit(self.zone.image, self.zone.rect)
