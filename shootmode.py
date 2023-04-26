@@ -7,7 +7,7 @@ class Shootmode :
         self.bullet_list = []
         self.bullet_list_left = []
         self.bullet_list_right = []
-        self.type = 3
+        self.type = 1
         
         
     def shoot(self , x , y):

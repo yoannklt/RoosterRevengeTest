@@ -83,7 +83,10 @@ class Game():
                         projectile.typeChange(projectile.rect.x, projectile.rect.y, 1)
                     elif self.zone.zonetype == 1:
                          projectile.typeChange(projectile.rect.x, projectile.rect.y, 2)
-                         self.shootmode.split(projectile.rect.x, projectile.rect.y)
+                        # split projectile
+                         if self.cooldown < pygame.time.get_ticks():
+                            self.cooldown = pygame.time.get_ticks() + 120
+                            self.shootmode.split(projectile.rect.x, projectile.rect.y)
                 for bot in self.testlevel.botlist :
                     if projectile.rect.colliderect(bot.rect):
                         self.shootmode.bullet_list.remove(projectile)
@@ -95,6 +98,7 @@ class Game():
                     self.shootmode.bullet_list.remove(projectile)
             
             for projectile in self.shootmode.bullet_list_left:
+                projectile.typeChange(projectile.rect.x, projectile.rect.y, 2)
                 self.screen.blit(projectile.image, projectile.rect)
                 projectile.rect.y -= projectile.velocity
                 projectile.rect.x -= projectile.velocity
@@ -102,6 +106,7 @@ class Game():
                     self.shootmode.bullet_list_left.remove(projectile)
 
             for projectile in self.shootmode.bullet_list_right:
+                projectile.typeChange(projectile.rect.x, projectile.rect.y, 2)
                 self.screen.blit(projectile.image, projectile.rect)
                 projectile.rect.y -= projectile.velocity
                 projectile.rect.x += projectile.velocity
