@@ -16,7 +16,7 @@ class Enemies():
         self.rect = self.image.get_rect()
         
         self.rect.x = randint(0, 900)
-        self.rect.y = randint(0, 300)
+        self.rect.y = -100
         
         self.health = 20
         self.bodyDamage = 5
@@ -25,15 +25,15 @@ class Enemies():
         
         self.points = 10
         
-        
-        
-    def update(self):
-        
         self.TimeStart = pygame.time.get_ticks()
+        
+        self.cooldown = 3
         
     def update(self, game):
                    
         self.rect.x += self.speed
+        if self.rect.y < 100:
+            self.rect.y += 2
         if self.speed > 0 and self.rect.x + self.rect.width >= 900:
             self.speed *= -1
             self.image = pygame.transform.flip(self.image, True, False)
@@ -43,9 +43,28 @@ class Enemies():
             self.image = pygame.transform.flip(self.image, True, False)
 
         self.timeSpent = (pygame.time.get_ticks() - self.TimeStart) // 1000
-        if self.timeSpent >= 3:
+        print(self.cooldown)
+        if self.timeSpent >= self.cooldown:
             self.shoot(self.rect.x + self.rect.w // 2, self.rect.y + self.rect.h, game)
-            self.TimeStart += 3000
+            self.TimeStart += self.cooldown + 1000
 
     def shoot(self, x, y, game):
         game.bullet_enemy.append(Enemy_bullet(x, y))
+        
+    def checkScore(self, score):
+        if score < 50:
+            self.cooldown = 2.75
+        if score < 100:
+            self.cooldown = 2.5
+        if score < 150:
+            self.cooldown = 2.25
+        if score < 200:
+            self.cooldown = 2
+        if score < 250:
+            self.cooldown = 1.75
+        if score < 300:
+            self.cooldown = 1.5
+        if score < 350:
+            self.cooldown = 1.25
+        if score < 400:
+            self.cooldown = 1
