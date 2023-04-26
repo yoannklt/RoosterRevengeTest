@@ -115,8 +115,9 @@ class Game():
                 self.screen.blit(bullet.image, bullet.rect)
                 for bot in self.level.botlist :
                     if bullet.rect.colliderect(bot.rect):
-                        self.shootmode.bullet_list_left.remove(bullet)
-                        bot.health -= bullet.bullet_damage 
+                        if bullet in self.shootmode.bullet_list_left :
+                            self.shootmode.bullet_list_left.remove(bullet)
+                            bot.health -= bullet.bullet_damage 
                     if bot.health <= 0:
                         self.level.botlist.remove(bot)
                         self.crates.append(Crates(bot.rect.x + (bot.rect.w // 2), bot.rect.y + bot.rect.h ))
@@ -130,7 +131,7 @@ class Game():
                 self.screen.blit(bullet.image, bullet.rect)
                 for bot in self.level.botlist :
                     if bullet.rect.colliderect(bot.rect):
-                        if bullet in self.shootmode.bullet_list :
+                        if bullet in self.shootmode.bullet_list_right :
                             self.shootmode.bullet_list_right.remove(bullet)
                             bot.health -= bullet.bullet_damage 
                     if bot.health <= 0:
@@ -162,7 +163,8 @@ class Game():
             if self.powerup.shieldOn == True:
                 self.powerup.updateShield(self.player.rect.x - (self.player.rect.w //2), self.player.rect.y)
                 self.screen.blit(self.powerup.image_shield, self.powerup.rect_shield)
-            
+                
+            self.player.drawScore(self.screen, 10, 10)
             self.screen.blit(self.zone.image, self.zone.rect)
             self.player.update_health(self.screen , self.screenHeight)
             self.screen.blit(self.player.image, self.player.rect)

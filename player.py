@@ -17,6 +17,8 @@ class Player():
         self.takenDamage = 0
         
         self.speed = 5
+        
+        self.score = 0
     
     def update_health(self , screen , screenH):
         
@@ -29,9 +31,6 @@ class Player():
         barH = 15
         
         pygame.draw.rect(screen , (237, 0, 0)  , (5 , screenH - barH - 10, barW * 3 , barH))
-        
-        
-        
         
     def drawScore(self, screen, posx, posy):
         myfont = pygame.font.SysFont("monospace", 32)
