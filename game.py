@@ -170,7 +170,7 @@ class Game():
             
             self.player.drawScore(self.screen, 10, 10)
             
-            self.timerEndOfLoop = (pygame.time.get_ticks() - self.timerStartBis) / 1000
+            self.timerEndOfLoop = (pygame.time.get_ticks() - self.timerStartBis) // 1000
             if self.timerEndOfLoop == 1:
                 self.player.updateScore(2)
                 self.timerStartBis += 2000
