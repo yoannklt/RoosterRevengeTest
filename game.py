@@ -25,11 +25,11 @@ class Game():
         # Initialize classes
         self.player = Player()
         self.zone = Zone()
-        self.testlevel = Level()
+        self.level = Level()
         self.shootmode = Shootmode()
         self.shield = Powerup()
         
-        # key assignement
+        # Initialize keybinds
         self.up = pygame.K_z
         self.down = pygame.K_s
         self.left = pygame.K_q
@@ -65,76 +65,78 @@ class Game():
                 self.shootmode.shoot(self.player.rect.x + (self.player.rect.w // 2), self.player.rect.y)
 
             # Lancer level 
-            if self.testlevel.create == True :
-                # self.testlevel.createObsatcle()
-                self.testlevel.createBot()
-                self.testlevel.create = False
+            if self.level.create == True :
+                # self.level.createObsatcle()
+                self.level.createBot()
+                self.level.create = False
                     
             self.screen.fill((4, 16, 29))
             self.screen.blit(self.background, (0, backgroundY))
             
-            # for obstacle in self.testlevel.obstaclelist :
+            # for obstacle in self.level.obstaclelist :
             #     self.screen.blit(obstacle.image, obstacle.rect)
             #     obstacle.rect.y += 2
-            for bot in self.testlevel.botlist :
+            for bot in self.level.botlist :
                 bot.update()
                 self.screen.blit(bot.image, bot.rect)
+            
                               
-            for projectile in self.shootmode.bullet_list:
-                self.screen.blit(projectile.image, projectile.rect)
-                projectile.rect.y -= projectile.velocity
-                if projectile.rect.colliderect(self.zone.rect):
-                    if self.zone.zonetype == 0:
-                        projectile.typeChange(projectile.rect.x, projectile.rect.y, 1)
-                    elif self.zone.zonetype == 1:
-                         projectile.typeChange(projectile.rect.x, projectile.rect.y, 2)
+            for bullet in self.shootmode.bullet_list:
+                self.screen.blit(bullet.image, bullet.rect)
+                bullet.rect.y -= bullet.velocity
+                if bullet.rect.colliderect(self.zone.rect):
+                    if self.zone.type == 0:
+                        bullet.typeChange(bullet.rect.x, bullet.rect.y, 1)
+                    elif self.zone.type == 1:
+                         bullet.typeChange(bullet.rect.x, bullet.rect.y, 2)
                          
                          
-                        # ! split projectile cooldown DOIT ETRE REGLER !
+                        # ! split bullet cooldown DOIT ETRE REGLER !
                          if self.cooldown < pygame.time.get_ticks():
                             self.cooldown = pygame.time.get_ticks() + 120
-                            self.shootmode.split(projectile.rect.x, projectile.rect.y)
+                            self.shootmode.split(bullet.rect.x, bullet.rect.y)
                             
                             
-                for bot in self.testlevel.botlist :
-                    if projectile.rect.colliderect(bot.rect):
-                        self.shootmode.bullet_list.remove(projectile)
-                        bot.health -= projectile.bullet_damage 
+                for bot in self.level.botlist :
+                    if bullet.rect.colliderect(bot.rect):
+                        self.shootmode.bullet_list.remove(bullet)
+                        bot.health -= bullet.bullet_damage 
                     if bot.health <= 0:
-                        self.testlevel.botlist.remove(bot)
-                        self.crates.append(Crates(bot.rect.x + (bot.rect.w // 2), bot.rect.y + bot.rect.h ))
-                if projectile.rect.y < 0 :
-                    self.shootmode.bullet_list.remove(projectile)
+                        self.level.botlist.remove(bot)
+                        self.crates.append(Crates(bot.rect.x + (bot.rect.w // 2), bot.rect.y + bot.rect.h))
+                self.screen.blit(bullet.image, bullet.rect)
+                if bullet.rect.y < 0:
+                    self.shootmode.bullet_list.remove(bullet)
             
-            for projectile in self.shootmode.bullet_list_left:
-                projectile.typeChange(projectile.rect.x, projectile.rect.y, 2)
-                self.screen.blit(projectile.image, projectile.rect)
-                for bot in self.testlevel.botlist :
-                    if projectile.rect.colliderect(bot.rect):
-                        self.shootmode.bullet_list_left.remove(projectile)
-                        bot.health -= projectile.bullet_damage 
+            for bullet in self.shootmode.bullet_list_left:
+                bullet.typeChange(bullet.rect.x, bullet.rect.y, 2)
+                self.screen.blit(bullet.image, bullet.rect)
+                for bot in self.level.botlist :
+                    if bullet.rect.colliderect(bot.rect):
+                        self.shootmode.bullet_list_left.remove(bullet)
+                        bot.health -= bullet.bullet_damage 
                     if bot.health <= 0:
-                        self.testlevel.botlist.remove(bot)
+                        self.level.botlist.remove(bot)
                         self.crates.append(Crates(bot.rect.x + (bot.rect.w // 2), bot.rect.y + bot.rect.h ))
-                projectile.rect.y -= projectile.velocity
-                projectile.rect.x -= projectile.velocity
-                if projectile.rect.y < 0 or projectile.rect.x < 0:
-                    self.shootmode.bullet_list_left.remove(projectile)
+                bullet.rect.y -= bullet.velocity
+                bullet.rect.x -= bullet.velocity
+                if bullet.rect.y < 0 or bullet.rect.x < 0:
+                    self.shootmode.bullet_list_left.remove(bullet)
 
-            for projectile in self.shootmode.bullet_list_right:
-                projectile.typeChange(projectile.rect.x, projectile.rect.y, 2)
-                self.screen.blit(projectile.image, projectile.rect)
-                for bot in self.testlevel.botlist :
-                    if projectile.rect.colliderect(bot.rect):
-                        self.shootmode.bullet_list_right.remove(projectile)
-                        bot.health -= projectile.bullet_damage 
+            for bullet in self.shootmode.bullet_list_right:
+                bullet.typeChange(bullet.rect.x, bullet.rect.y, 2)
+                self.screen.blit(bullet.image, bullet.rect)
+                for bot in self.level.botlist :
+                    if bullet.rect.colliderect(bot.rect):
+                        self.shootmode.bullet_list_right.remove(bullet)
+                        bot.health -= bullet.bullet_damage 
                     if bot.health <= 0:
-                        self.testlevel.botlist.remove(bot)
+                        self.level.botlist.remove(bot)
                         self.crates.append(Crates(bot.rect.x + (bot.rect.w // 2), bot.rect.y + bot.rect.h ))
-                projectile.rect.y -= projectile.velocity
-                projectile.rect.x += projectile.velocity
-                if projectile.rect.y < 0 or projectile.rect.x > 900:
-                    self.shootmode.bullet_list_right.remove(projectile)
+                bullet.rect.y -= bullet.velocity
+                bullet.rect.x += bullet.velocity
+                if bullet.rect.y < 0 or bullet.rect.x > 900:
+                    self.shootmode.bullet_list_right.remove(bullet)
                 
             for crates in self.crates:
                 self.screen.blit(crates.image, crates.rect)
@@ -148,6 +150,9 @@ class Game():
                 if crates.rect.y < 0 :
                     self.crates.remove(crates)
             
+            # Ajoute des éléments au rendu
+            self.screen.blit(self.zone.image, self.zone.rect)
+            self.player.update_health(self.screen , self.screenHeight)
             if self.shield.shieldOn == True:
                 self.shield.update(self.player.rect.x - (self.player.rect.w //2), self.player.rect.y)
                 self.screen.blit(self.shield.image_shield, self.shield.rect_shield)
