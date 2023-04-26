@@ -12,7 +12,7 @@ class Game():
     
     def __init__(self):
         self.screenWidth = 900 
-        self.screenHeight =  700
+        self.screenHeight = 700
         self.screen = pygame.display.set_mode((self.screenWidth, self.screenHeight))
         pygame.display.set_caption('Rooster Revenge')
         self.cooldown = 0
@@ -136,7 +136,8 @@ class Game():
                 bullet.rect.y -= bullet.velocity
                 bullet.rect.x -= bullet.velocity
                 if bullet.rect.y < 0 or bullet.rect.x < 0:
-                    self.shootmode.bullet_list_left.remove(bullet)
+                    if bullet in self.shootmode.bullet_list_left:
+                        self.shootmode.bullet_list_left.remove(bullet)
 
             for bullet in self.shootmode.bullet_list_right:
                 bullet.typeChange(bullet.rect.x, bullet.rect.y, 2)
@@ -153,7 +154,8 @@ class Game():
                 bullet.rect.y -= bullet.velocity
                 bullet.rect.x += bullet.velocity
                 if bullet.rect.y < 0 or bullet.rect.x > 900:
-                    self.shootmode.bullet_list_right.remove(bullet)
+                    if bullet in self.shootmode.bullet_list_right :
+                        self.shootmode.bullet_list_right.remove(bullet)
                 
             for crates in self.crates:
                 self.screen.blit(crates.image, crates.rect)
@@ -183,6 +185,7 @@ class Game():
             if self.timerEndOfLoop == 1:
                 self.player.updateScore(2)
                 self.timerStartBis += 2000
+                self.enemies.checkScore(self.player.score)
                 
             self.screen.blit(self.zone.image, self.zone.rect)
             self.player.update_health(self.screen , self.screenHeight)

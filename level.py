@@ -2,6 +2,7 @@ import pygame
 from obstacle import Obstacle
 from enemies import Enemies
 from enemy_bullet import Enemy_bullet
+from random import randint
 
 class Level():
     
@@ -14,7 +15,8 @@ class Level():
         
         self.create = True
         
-        self.enemies = [5,5,5,10,10,10,15,20,20]
+        self.enemies = [5,5,5]
+    
         
     def update(self, game):
         
@@ -22,11 +24,13 @@ class Level():
         
         for i in self.botlist:
             i.update(game)
-            
+         
         for i in range(len(self.enemies)-1, -1, -1):   
             if self.enemies[i] < (pygame.time.get_ticks() - game.timeStart) // 1000:
-                self.enemies.pop(i)
-                self.botlist.append(Enemies())
+                if len(self.botlist) < 3:
+                    self.enemies.pop(i)
+                    self.botlist.append(Enemies())
+                    self.enemies.append(randint(self.enemies[-1],self.enemies[-1] + 5 ))   
                 
     def dislpay(self, game):
         for i in self.botlist:
