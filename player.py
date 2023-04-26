@@ -9,7 +9,7 @@ class Player():
         self.image = pygame.transform.scale(self.imageInit, (75, 150))
 
         # Get rectangle from image
-        self.rect = self.image.get_rect()
-        self.rect.x = 200
+        self.rect = self.image.get_rect(center=(450, 600))
+
         
         self.health = 100

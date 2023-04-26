@@ -147,8 +147,11 @@ class Game():
                 if crates.rect.y < 0 :
                     self.crates.remove(crates)
                     
-            self.screen.blit(self.player.image, self.player.rect)
+            # Ajoute des éléments au rendu
             self.screen.blit(self.zone.image, self.zone.rect)
+            self.screen.blit(self.player.image, self.player.rect)
+            
+            # Actualise le rendu
             pygame.display.flip()
             backgroundVelocity += 1
             clock.tick(60)
