@@ -83,10 +83,14 @@ class Game():
                         projectile.typeChange(projectile.rect.x, projectile.rect.y, 1)
                     elif self.zone.zonetype == 1:
                          projectile.typeChange(projectile.rect.x, projectile.rect.y, 2)
-                        # split projectile
+                         
+                         
+                        # split projectile cooldown not working
                          if self.cooldown < pygame.time.get_ticks():
                             self.cooldown = pygame.time.get_ticks() + 120
                             self.shootmode.split(projectile.rect.x, projectile.rect.y)
+                            
+                            
                 for bot in self.testlevel.botlist :
                     if projectile.rect.colliderect(bot.rect):
                         self.shootmode.bullet_list.remove(projectile)
