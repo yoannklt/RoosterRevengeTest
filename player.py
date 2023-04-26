@@ -6,7 +6,7 @@ class Player():
         
         self.imageInit = pygame.image.load("img/player.png")
         
-        self.image = pygame.transform.scale(self.imageInit, (100, 175))
+        self.image = pygame.transform.scale(self.imageInit, (75, 150))
 
         # Get rectangle from image
         self.rect = self.image.get_rect()

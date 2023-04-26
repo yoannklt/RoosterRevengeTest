@@ -1,5 +1,6 @@
 import pygame
 from obstacle import Obstacle
+from enemies import Enemies
 
 class Level:
     
@@ -51,8 +52,16 @@ class Level:
         # self.obstacle_y = [-8100, -8100, -8250, -8250, -8900, -8900, -8925, -8925, -8925]
         # self.obstacle_W = [300, 300, 400, 400, 25, 25, 400, 100, 400]
         # self.obstacle_H = [1000, 1000, 25, 25, 650, 650, 25, 25, 25]
-  
+    
+        self.nbrbot = 3
+        self.botlist = []
+        self.bot_x = [100 , 450  , 800]
+        self.bot_y = [100 , 150  , 200]
+        
     def createObsatcle(self) :    
         for i in range (self.nbrobstacle) :
             self.obstaclelist.append(Obstacle(self.obstacle_x[i], self.obstacle_y[i], self.obstacle_W[i], self.obstacle_H[i]))
-     
+    
+    def createBot(self) :
+        for i in range (self.nbrbot) :
+            self.botlist.append(Enemies(self.bot_x[i], self.bot_y[i]))
