@@ -1,5 +1,4 @@
 import pygame
-from enemies import Enemies
 
 class Player():
     
@@ -28,7 +27,9 @@ class Player():
             healthBar = (self.takenDamage * 100)//self.health
         barW = 100 - healthBar
         barH = 15
+        
         pygame.draw.rect(screen , (237, 0, 0)  , (5 , screenH - barH - 10, barW * 3 , barH))
+        
         
         
         

@@ -30,6 +30,7 @@ class Game():
         self.level = Level()
         self.shootmode = Shootmode()
         self.powerup = Powerup()
+        self.enemy = Enemies()
         self.enemy_shot = Enemy_shot_mode()
         
         # Initialize keybinds
@@ -77,6 +78,9 @@ class Game():
             # Lancer level 
             self.level.update(self)
             self.level.dislpay(self)
+            
+            if self.player.rect.colliderect(self.enemy.rect):
+                self.player.takenDamage += self.enemy.bodyDamage
                                      
             for bullet in self.shootmode.bullet_list:
                 self.screen.blit(bullet.image, bullet.rect)

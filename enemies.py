@@ -19,9 +19,10 @@ class Enemies():
         self.rect.y = randint(0, 300)
         
         self.health = 20
-        self.damage = 5
+        self.bodyDamage = 5
         
         self.speed = 2
+        
         
         
     def update(self):
