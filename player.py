@@ -13,4 +13,3 @@ class Player():
         self.rect.x = 200
         
         self.health = 100
-

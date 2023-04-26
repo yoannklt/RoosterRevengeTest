@@ -7,6 +7,7 @@ from level import Level
 from crates import Crates
 from shootmode import Shootmode
 from zone import Zone
+from powerup import Powerup
 
 class Game():
     
@@ -15,8 +16,8 @@ class Game():
         self.screenHeight =  700
         self.screen = pygame.display.set_mode((self.screenWidth, self.screenHeight))
         pygame.display.set_caption('Rooster Revenge')
-        
         self.cooldown = 0
+        
         # Initialize backgrounds
         self.background = pygame.image.load('img/background.jpg')
         self.background.convert()
@@ -26,11 +27,14 @@ class Game():
         self.zone = Zone()
         self.testlevel = Level()
         self.shootmode = Shootmode()
+        
+        # key assignement
         self.up = pygame.K_z
         self.down = pygame.K_s
         self.left = pygame.K_q
         self.right = pygame.K_d
         self.shoot = pygame.K_SPACE
+        
         self.crates = []
         
     def run(self):
@@ -45,6 +49,7 @@ class Game():
                     running = False
             
             key_states = pygame.key.get_pressed()
+            
             if key_states[self.up]:
                 self.player.rect.y -= 5
             if key_states[self.down]:
@@ -53,11 +58,10 @@ class Game():
                 self.player.rect.x -= 5
             if key_states[self.right]:
                 self.player.rect.x += 5
-                 
+               
             if key_states[self.shoot] and self.cooldown < pygame.time.get_ticks():
                 self.cooldown = pygame.time.get_ticks() + 120
                 self.shootmode.shoot(self.player.rect.x + (self.player.rect.w // 2), self.player.rect.y)
-                # (Bullet((self.player.rect.x + (self.player.rect.w // 2)), self.player.rect.y))
 
             # Lancer level 
             if self.testlevel.create == True :
@@ -85,7 +89,7 @@ class Game():
                          projectile.typeChange(projectile.rect.x, projectile.rect.y, 2)
                          
                          
-                        # split projectile cooldown not working
+                        # ! split projectile cooldown DOIT ETRE REGLER !
                          if self.cooldown < pygame.time.get_ticks():
                             self.cooldown = pygame.time.get_ticks() + 120
                             self.shootmode.split(projectile.rect.x, projectile.rect.y)
@@ -140,7 +144,7 @@ class Game():
                     self.crates.remove(crates) 
                 if crates.rect.y < 0 :
                     self.crates.remove(crates)
-            
+                    
             self.screen.blit(self.player.image, self.player.rect)
             self.screen.blit(self.zone.image, self.zone.rect)
             pygame.display.flip()
