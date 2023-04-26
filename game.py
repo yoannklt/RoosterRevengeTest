@@ -151,15 +151,17 @@ class Game():
                     self.crates.remove(crates)
             
             # Ajoute des éléments au rendu
-            self.screen.blit(self.zone.image, self.zone.rect)
-            self.player.update_health(self.screen , self.screenHeight)
             if self.shield.shieldOn == True:
                 self.shield.update(self.player.rect.x - (self.player.rect.w //2), self.player.rect.y)
                 self.screen.blit(self.shield.image_shield, self.shield.rect_shield)
-                
-            self.screen.blit(self.player.image, self.player.rect)
+            
             self.screen.blit(self.zone.image, self.zone.rect)
+            self.player.update_health(self.screen , self.screenHeight)
+            self.screen.blit(self.player.image, self.player.rect)
+            
+            # Actualise le rendu
             pygame.display.flip()
+            
             backgroundVelocity += 1
             clock.tick(60)
         
