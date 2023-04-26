@@ -18,7 +18,7 @@ class Enemies():
         self.rect.x = randint(0, 900)
         self.rect.y = -100
         
-        self.health = 20
+        self.health = 100
         self.bodyDamage = 5
         
         self.speed = 2
