@@ -45,7 +45,9 @@ class Game():
         running = True
         
         while running:
+            
             backgroundY = -1400 + backgroundVelocity
+            
             for event in pygame.event.get():
                 if event.type == pygame.QUIT:
                     running = False
@@ -79,7 +81,8 @@ class Game():
             #     obstacle.rect.y += 2
             for bot in self.level.botlist :
                 bot.update()
-                bot.shootPattern()
+                if bot.rect.colliderect(self.player.rect):
+                    self.player.takenDamage += bot.damage
                 self.screen.blit(bot.image, bot.rect)
             
             for projectile_enemie in self.level.bullet_list:
@@ -103,7 +106,7 @@ class Game():
                          
                         # ! split bullet cooldown DOIT ETRE REGLER !
                          if self.cooldown < pygame.time.get_ticks():
-                            self.cooldown = pygame.time.get_ticks() + 120
+                            self.cooldown = pygame.time.get_ticks() + 20
                             self.shootmode.split(bullet.rect.x, bullet.rect.y)
                             
                             
