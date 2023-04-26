@@ -5,8 +5,7 @@ class Crates():
 
     def __init__(self, x, y):
 
-        # self.crate_type = random.randrange(1 , 4)
-        self.crate_type = 3
+        self.crate_type = random.randrange(1 , 4)
         
         if self.crate_type == 1:
             self.imageInit = pygame.image.load("img/heal.png")

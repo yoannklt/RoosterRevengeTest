@@ -4,11 +4,12 @@ from enemy_bullet import Enemy_bullet
 from bullet import Bullet
 from enemies import Enemies
 from obstacle import Obstacle
-from ennemies_fonctions import Ennemies_fonctions
+from level import Level
 from crates import Crates
 from shootmode import Shootmode
 from zone import Zone
 from powerup import Powerup
+from enemy_shot_mode import Enemy_shot_mode
 
 class Game():
     
@@ -26,9 +27,10 @@ class Game():
         # Initialize classes
         self.player = Player()
         self.zone = Zone()
-        self.level = Ennemies_fonctions()
+        self.level = Level()
         self.shootmode = Shootmode()
         self.powerup = Powerup()
+        self.enemy_shot = Enemy_shot_mode()
         
         # Initialize keybinds
         self.up = pygame.K_z
@@ -41,6 +43,7 @@ class Game():
         
     def run(self):
         clock = pygame.time.Clock()
+        self.timeStart = pygame.time.get_ticks()
         backgroundVelocity = 0
         running = True
         
@@ -65,31 +68,13 @@ class Game():
                 self.cooldown = pygame.time.get_ticks() + 120
                 self.shootmode.shoot(self.player.rect.x + (self.player.rect.w // 2), self.player.rect.y)
 
-            # Lancer level 
-            if self.level.create == True :
-                # self.level.createObsatcle()
-                self.level.createBot()
-                self.level.create = False
-                    
+    
             self.screen.fill((4, 16, 29))
             self.screen.blit(self.background, (0, backgroundY))
             
-            # for obstacle in self.level.obstaclelist :
-            #     self.screen.blit(obstacle.image, obstacle.rect)
-            #     obstacle.rect.y += 2
-            for bot in self.level.botlist :
-                bot.update()
-                bot.shootPattern()
-                self.screen.blit(bot.image, bot.rect)
-            
-            for projectile_enemie in self.level.bullet_list:
-                self.screen.blit(projectile_enemie.image, projectile_enemie.rect)
-                projectile_enemie.rect.y += projectile_enemie.velocity
-                if projectile_enemie.rect.colliderect(self.player.rect):
-                    self.player.health -= projectile_enemie.bullet_damage
-                    self.level.bullet_list.remove(projectile_enemie)
-                if projectile_enemie.rect.y > 700:
-                    self.level.bullet_list.remove(projectile_enemie)
+            # Lancer level 
+            self.level.update(self)
+            self.level.dislpay(self)
                                      
             for bullet in self.shootmode.bullet_list:
                 self.screen.blit(bullet.image, bullet.rect)
@@ -109,8 +94,9 @@ class Game():
                             
                 for bot in self.level.botlist :
                     if bullet.rect.colliderect(bot.rect):
-                        self.shootmode.bullet_list.remove(bullet)
-                        bot.health -= bullet.bullet_damage 
+                        if bullet in self.shootmode.bullet_list :
+                            self.shootmode.bullet_list.remove(bullet)
+                            bot.health -= bullet.bullet_damage 
                     if bot.health <= 0:
                         self.level.botlist.remove(bot)
                         self.crates.append(Crates(bot.rect.x + (bot.rect.w // 2), bot.rect.y + bot.rect.h))
