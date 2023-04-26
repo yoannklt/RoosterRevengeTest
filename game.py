@@ -74,29 +74,9 @@ class Game():
             self.screen.fill((4, 16, 29))
             self.screen.blit(self.background, (0, backgroundY))
             
-<<<<<<< HEAD
-            # for obstacle in self.level.obstaclelist :
-            #     self.screen.blit(obstacle.image, obstacle.rect)
-            #     obstacle.rect.y += 2
-            for bot in self.level.botlist :
-                bot.update()
-                if bot.rect.colliderect(self.player.rect):
-                    self.player.takenDamage += bot.damage
-                self.screen.blit(bot.image, bot.rect)
-            
-            for projectile_enemie in self.level.bullet_list:
-                self.screen.blit(projectile_enemie.image, projectile_enemie.rect)
-                projectile_enemie.rect.y += projectile_enemie.velocity
-                if projectile_enemie.rect.colliderect(self.player.rect):
-                    self.player.health -= projectile_enemie.bullet_damage
-                    self.level.bullet_list.remove(projectile_enemie)
-                if projectile_enemie.rect.y > 700:
-                    self.level.bullet_list.remove(projectile_enemie)
-=======
             # Lancer level 
             self.level.update(self)
             self.level.dislpay(self)
->>>>>>> 45821dcf67e1795653440ccbdcad8eadd61115e8
                                      
             for bullet in self.shootmode.bullet_list:
                 self.screen.blit(bullet.image, bullet.rect)
