@@ -5,6 +5,7 @@ class Powerup:
     def __init__(self):
         
         self.shieldOn = False
+        self.shieldHealth = 30
         
         self.speedOn = False
         
@@ -23,19 +24,20 @@ class Powerup:
         self.TimeStart = pygame.time.get_ticks()
         
         
-    def updateShield(self, x ,y, enemyShot):
+    def updateShield(self, x ,y):
         if self.shieldOn == True:
-            self.shieldHealth = 30
             time_spent_ticks = (pygame.time.get_ticks() - self.TimeStart) //1000
             self.rect_shield.x = x
             self.rect_shield.y = y
             if time_spent_ticks == 6:
                 time_spent_ticks = 0
                 self.shieldOn = False
-            # elif self.rect_shield.colliderect(enemyShot.rect) :
-            #     self.shieldHealth -= enemyShot.bullet_damage
-            #     if self.shieldHealth <= 0:
-            #         self.shieldOn = False
+                
+    def collideShield(self, enemyBullet):
+        if self.rect_shield.colliderect(enemyBullet.rect):
+            self.shieldHealth -= enemyBullet.bullet_damage
+            if self.shieldHealth <= 0:
+                self.shieldOn = False
         
         
     def SpeedBoost(self, player):

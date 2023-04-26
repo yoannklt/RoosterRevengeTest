@@ -34,6 +34,7 @@ class Game():
         self.shootmode = Shootmode()
         self.powerup = Powerup()
         self.enemies_shot = Enemy_shot_mode()
+        self.enemy_bullet = Enemy_bullet(self.enemies.rect.x, self.enemies.rect.y)
         
         # Initialize keybinds
         self.up = pygame.K_z
@@ -91,7 +92,8 @@ class Game():
                 if projectile.rect.colliderect(self.player.rect):
                     if projectile in self.bullet_enemies:
                         self.bullet_enemies.remove(projectile)
-                        self.player.takenDamage += projectile.bullet_damage
+                        if self.powerup.shieldOn == False :
+                            self.player.takenDamage += projectile.bullet_damage
                 projectile.rect.y += projectile.velocity
                 if projectile.rect.y > 700:
                     self.bullet_enemies.remove(projectile)
@@ -99,16 +101,17 @@ class Game():
             for bullet in self.shootmode.bullet_list:
                 self.screen.blit(bullet.image, bullet.rect)
                 bullet.rect.y -= bullet.velocity
-                if bullet.rect.colliderect(self.zone.rect):
-                    if self.zone.type == 0:
-                        bullet.typeChange(bullet.rect.x, bullet.rect.y, 1)
-                    elif self.zone.type == 1:
-                         bullet.typeChange(bullet.rect.x, bullet.rect.y, 2)
+                for zones in self.level.zonelist:
+                    if bullet.rect.colliderect(zones.rect):
+                        if zones.type == 0:
+                            bullet.typeChange(bullet.rect.x, bullet.rect.y, 1)
+                        elif zones.type == 1:
+                            bullet.typeChange(bullet.rect.x, bullet.rect.y, 2)
                          
                          
                         # ! split bullet cooldown DOIT ETRE REGLER !
-                         if self.cooldown < pygame.time.get_ticks():
-                            self.cooldown = pygame.time.get_ticks() + 70
+                        if self.cooldown < pygame.time.get_ticks():
+                            self.cooldown = pygame.time.get_ticks() + 120
                             self.shootmode.split(bullet.rect.x, bullet.rect.y)
                             
                             
@@ -119,13 +122,14 @@ class Game():
                             bot.health -= bullet.bullet_damage 
                     if bot.health <= 0:
                         self.level.botlist.remove(bot)
-                        drop = randint(1,4)
+                        drop = randint(1,3)
                         if drop == 1 :
                             self.crates.append(Crates(bot.rect.x + (bot.rect.w // 2), bot.rect.y + bot.rect.h))
                         self.player.updateScore(self.enemies.points)
                 self.screen.blit(bullet.image, bullet.rect)
                 if bullet.rect.y < 0:
-                    self.shootmode.bullet_list.remove(bullet)
+                    if bullet in self.shootmode.bullet_list :
+                        self.shootmode.bullet_list.remove(bullet)
             
             for bullet in self.shootmode.bullet_list_left:
                 bullet.typeChange(bullet.rect.x, bullet.rect.y, 2)
@@ -137,7 +141,7 @@ class Game():
                             bot.health -= bullet.bullet_damage 
                     if bot.health <= 0:
                         self.level.botlist.remove(bot)
-                        drop = randint(1,4)
+                        drop = randint(1,3)
                         if drop == 1 :
                             self.crates.append(Crates(bot.rect.x + (bot.rect.w // 2), bot.rect.y + bot.rect.h ))
                         self.player.updateScore(self.enemies.points)
@@ -157,7 +161,7 @@ class Game():
                             bot.health -= bullet.bullet_damage 
                     if bot.health <= 0:
                         self.level.botlist.remove(bot)
-                        drop = randint(1,4)
+                        drop = randint(1,3)
                         if drop == 1 :
                             self.crates.append(Crates(bot.rect.x + (bot.rect.w // 2), bot.rect.y + bot.rect.h ))
                         self.player.updateScore(self.enemies.points)
@@ -186,7 +190,8 @@ class Game():
                 
             # Ajoute des éléments au rendu
             if self.powerup.shieldOn == True:
-                self.powerup.updateShield(self.player.rect.x - (self.player.rect.w //2), self.player.rect.y, self.enemies_shot)
+                self.powerup.updateShield(self.player.rect.x - (self.player.rect.w //2), self.player.rect.y)
+                self.powerup.collideShield(self.enemy_bullet)
                 self.screen.blit(self.powerup.image_shield, self.powerup.rect_shield)
             
             self.player.drawScore(self.screen, 10, 10)
@@ -197,7 +202,11 @@ class Game():
                 self.timerStartBis += 2000
                 self.enemies.checkScore(self.player.score)
                 
-            self.screen.blit(self.zone.image, self.zone.rect)
+            for zones in self.level.zonelist:
+                self.screen.blit(zones.image, zones.rect)
+                if zones.rect.y > 700 : 
+                    self.level.zonelist.remove(zones)
+                
             self.player.update_health(self.screen , self.screenHeight)
             self.screen.blit(self.player.image, self.player.rect)
             

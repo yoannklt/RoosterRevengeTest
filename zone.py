@@ -1,5 +1,6 @@
 import pygame
 import random
+from random import randint
 from shootmode import *
 from player import * 
 from bullet import *
@@ -17,7 +18,12 @@ class Zone():
         
         self.image = pygame.transform.scale(self.imageInit, (100, 25))
 
-        self.rect = self.image.get_rect(center=(450,350))
+        self.rect = self.image.get_rect()
+        
+        self.rect.x = randint(0, 900)
+        self.rect.y = -100
+        
+        self.velocity = 1
         
         # Initialize classes
         self.shootmode = Shootmode()
@@ -27,13 +33,18 @@ class Zone():
         
     def updateShot(self, bullet):
 
-            bullet.rect.y -= bullet.velocity
-            if bullet.rect.colliderect(self.rect):
-                if self.type == 0:
-                    bullet.typeChange(bullet.rect.x, bullet.rect.y, 1)
-                elif self.type == 1:
-                    bullet.typeChange(bullet.rect.x, bullet.rect.y, 2)
-                    self.shootmode.split(bullet.rect.x, bullet.rect.y)
+        bullet.rect.y -= bullet.velocity
+        if bullet.rect.colliderect(self.rect):
+            if self.type == 0:
+                bullet.typeChange(bullet.rect.x, bullet.rect.y, 1)
+            elif self.type == 1:
+                bullet.typeChange(bullet.rect.x, bullet.rect.y, 2)
+                self.shootmode.split(bullet.rect.x, bullet.rect.y)
+                    
+    def update(self):
+        self.rect.y += self.velocity
+        print(self.rect.y)
+        
             
                     
 
