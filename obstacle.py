@@ -1,6 +1,6 @@
 import pygame
 
-class Obstacle:
+class Obstacle():
     
     def __init__(self, x, y , w, h):
         

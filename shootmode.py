@@ -1,7 +1,7 @@
 import pygame
 from bullet import Bullet
 
-class Shootmode :
+class Shootmode():
     
     def __init__(self):
         self.bullet_list = []

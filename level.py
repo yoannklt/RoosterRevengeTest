@@ -2,7 +2,7 @@ import pygame
 from obstacle import Obstacle
 from enemies import Enemies
 
-class Level:
+class Level():
     
     def __init__(self):
         

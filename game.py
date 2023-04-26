@@ -27,6 +27,7 @@ class Game():
         self.zone = Zone()
         self.testlevel = Level()
         self.shootmode = Shootmode()
+        self.shield = Powerup()
         
         # key assignement
         self.up = pygame.K_z
@@ -141,10 +142,16 @@ class Game():
                 if crates.rect.colliderect(self.player.rect):
                     if crates.crate_type == 1:
                         self.player.health += crates.heal
+                    elif crates.crate_type == 2:
+                        self.shield.setShieldOn()
                     self.crates.remove(crates) 
                 if crates.rect.y < 0 :
                     self.crates.remove(crates)
-                    
+            
+            if self.shield.shieldOn == True:
+                self.shield.update(self.player.rect.x - (self.player.rect.w //2), self.player.rect.y)
+                self.screen.blit(self.shield.image_shield, self.shield.rect_shield)
+                
             self.screen.blit(self.player.image, self.player.rect)
             self.screen.blit(self.zone.image, self.zone.rect)
             pygame.display.flip()
