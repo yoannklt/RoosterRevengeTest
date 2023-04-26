@@ -126,8 +126,9 @@ class Game():
                 self.screen.blit(bullet.image, bullet.rect)
                 for bot in self.level.botlist :
                     if bullet.rect.colliderect(bot.rect):
-                        self.shootmode.bullet_list_right.remove(bullet)
-                        bot.health -= bullet.bullet_damage 
+                        if bullet in self.shootmode.bullet_list :
+                            self.shootmode.bullet_list_right.remove(bullet)
+                            bot.health -= bullet.bullet_damage 
                     if bot.health <= 0:
                         self.level.botlist.remove(bot)
                         self.crates.append(Crates(bot.rect.x + (bot.rect.w // 2), bot.rect.y + bot.rect.h ))
