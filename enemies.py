@@ -23,11 +23,10 @@ class Enemies():
         
         self.speed = 2
         
-        
-    def update(self):
-        
         self.TimeStart = pygame.time.get_ticks()
-                
+        
+    def update(self, game):
+                   
         self.rect.x += self.speed
         if self.speed > 0 and self.rect.x + self.rect.width >= 900:
             self.speed *= -1
@@ -36,8 +35,11 @@ class Enemies():
         if self.speed < 0 and self.rect.x <= 0:
             self.speed *= -1
             self.image = pygame.transform.flip(self.image, True, False)
-        
-        
-        
-         
-            
+
+        self.timeSpent = (pygame.time.get_ticks() - self.TimeStart) // 1000
+        if self.timeSpent >= 3:
+            self.shoot(self.rect.x + self.rect.w // 2, self.rect.y + self.rect.h, game)
+            self.TimeStart += 3000
+
+    def shoot(self, x, y, game):
+        game.bullet_enemy.append(Enemy_bullet(x, y))
