@@ -21,6 +21,8 @@ class Bullet():
         self.bullet_type = 0
         
         self.velocity = 15
+        
+        self.bulletList = []
     
     def typeChange(self, bullet_x, bullet_y, type):
         
