@@ -9,6 +9,8 @@ class Enemies():
         self.imageInit = pygame.image.load("img/enemies.png")
         
         self.image = pygame.transform.scale(self.imageInit, (160, 123))
+        self.image = pygame.transform.flip(self.image, True, False)
+        
 
         # Get rectangle from image
         self.rect = self.image.get_rect()
@@ -17,6 +19,7 @@ class Enemies():
         self.rect.y = randint(0, 300)
         
         self.health = 20
+        self.damage = 5
         
         self.speed = 2
         
@@ -28,6 +31,7 @@ class Enemies():
         self.rect.x += self.speed
         if self.speed > 0 and self.rect.x + self.rect.width >= 900:
             self.speed *= -1
+            self.image = pygame.transform.flip(self.image, True, False)
         
         if self.speed < 0 and self.rect.x <= 0:
             self.speed *= -1

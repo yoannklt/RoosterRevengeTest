@@ -1,4 +1,5 @@
 import pygame
+from enemies import Enemies
 
 class Player():
     
@@ -28,6 +29,8 @@ class Player():
         barW = 100 - healthBar
         barH = 15
         pygame.draw.rect(screen , (237, 0, 0)  , (5 , screenH - barH - 10, barW * 3 , barH))
+        
+        
         
     def drawScore(self, screen, posx, posy):
         myfont = pygame.font.SysFont("monospace", 32)
