@@ -25,7 +25,7 @@ class Zone():
         self.bullet = Bullet(self.player.rect.x, self.player.rect.y)
     
         
-    def updateShot(self, cratesList, bullet):
+    def updateShot(self, bullet):
 
             bullet.rect.y -= bullet.velocity
             if bullet.rect.colliderect(self.rect):
