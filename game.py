@@ -149,6 +149,7 @@ class Game():
                     
             # Ajoute des éléments au rendu
             self.screen.blit(self.zone.image, self.zone.rect)
+            self.player.update_health(self.screen , self.screenHeight)
             self.screen.blit(self.player.image, self.player.rect)
             
             # Actualise le rendu
