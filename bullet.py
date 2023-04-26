@@ -19,7 +19,6 @@ class Bullet():
         self.bullet_damage = 10
         
         self.velocity = 15
-        
     
     def typeChange(self, bullet_x, bullet_y, type):
         

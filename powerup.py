@@ -33,8 +33,7 @@ class Powerup:
     def SpeedBoost(self, player):
         if self.speedOn == True:
             time_spent_ticks = (pygame.time.get_ticks() - self.TimeStart) //1000
-            player.speed = 10
-            print(time_spent_ticks)
+            player.speed = 8
             if time_spent_ticks == 6:
                 time_spent_ticks = 0
                 player.speed = 5
