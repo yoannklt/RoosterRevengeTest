@@ -2,9 +2,7 @@ import pygame
 from random import randint
 from player import Player
 from enemy_bullet import Enemy_bullet
-from bullet import Bullet
 from enemies import Enemies
-from obstacle import Obstacle
 from level import Level
 from crates import Crates
 from shootmode import Shootmode
@@ -136,7 +134,7 @@ class Game():
                 self.screen.blit(bullet.image, bullet.rect)
                 for bot in self.level.botlist :
                     if bullet.rect.colliderect(bot.rect):
-                        if bullet in self.shootmode.bullet_list_left :
+                        if bullet in self.shootmode.bullet_list_left:
                             self.shootmode.bullet_list_left.remove(bullet)
                             bot.health -= bullet.bullet_damage 
                     if bot.health <= 0:
@@ -200,7 +198,6 @@ class Game():
             if self.timerEndOfLoop == 1:
                 self.player.updateScore(2)
                 self.timerStartBis += 2000
-                self.enemies.checkScore(self.player.score)
                 
             for zones in self.level.zonelist:
                 self.screen.blit(zones.image, zones.rect)
